@@ -10,7 +10,12 @@ class PaymentProcessor(object):
         with open(csv_path) as f:
             reader = csv.DictReader(f)
             for row in reader:
-                payments.append(Payment(row))
+                row.update({"source": source})
+                if source == 'bank':
+                    row.update({"bank_status": "processed"})
+                    payments.append(Payment(row))
+                else:
+                    payments.append(Payment(row))
 
         return payments
 
